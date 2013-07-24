@@ -18,5 +18,5 @@ I use a standard set of branches to experiment, test, and release production rea
   * Fully tested
 * Stable = Development Ready
   * May not have tests or benchmarks
-* Experimental = Totally Wild
+* Exp= Totally Wild
   * Trying out ideas and stuff.
