@@ -1,5 +1,5 @@
 //package simplewords
-package main
+package siw
 
 import (
 	"fmt"
@@ -102,11 +102,4 @@ func LotsoDocso(files []string) {
 		//fmt.Printf("\n # of Sentences: %d\n # of Words: %d\n Id: %d \n Label: %s\n Frequency for 'this' = %v\n\n",len(doc.sentences), len(doc.words), doc.id, doc.label)
 
 	}
-}
-
-
-
-func main() {
-	files := []string{"/Users/jbowles/x/training_data/sentences_one.txt"}
-	LotsoDocso(files)
 }

@@ -20,3 +20,32 @@ I use a standard set of branches to experiment, test, and release production rea
   * May not have tests or benchmarks
 * Exp= Totally Wild
   * Trying out ideas and stuff.
+
+## Loader
+```go
+func main() {
+	files := []string{"/Users/jbowles/x/training_data/sentences_one.txt"}
+	LotsoDocso(files)
+}
+```
+
+## Crawler
+```go
+func main() {
+  var urls = []string{
+    //"http://golang.org/",
+    "https://en.wikipedia.org/wiki/Natural_language_processing",
+    //"http://golang.org/doc/faq#What_is_the_purpose_of_the_project",
+    //"https://github.com/yarlett/corpustools",
+    //"https://github.com/angeloskath/nlp-maxent-optimizer",
+    //"https://code.google.com/p/mlgo/",
+  }
+
+	results := asyncHttpGets(urls)
+	for _, result := range results {
+		fmt.Printf("URL: %s \nstatus: %s \nHeader: \n%s\n\n", result.url, result.response.Status, result.response.Header)
+		body, _ := ioutil.ReadAll(result.response.Body)
+		fmt.Println(string(body))
+	}
+}
+```
