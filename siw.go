@@ -1,6 +1,6 @@
 package siw
 
-func LotsoDocso(files []string) {
+func LotsoDocso(files []string) (this []string) {
 	for idx, f := range files {
 		c := make(chan Document)
 		r := ReadText(f)
@@ -8,6 +8,8 @@ func LotsoDocso(files []string) {
 		doc := <-c
 		tf_c := make(chan []string)
 		go doc.TypeFrequencyChan(tf_c) 
-		<-tf_c
+		this := <-tf_c
+		return this
 	}
+	return
 }
