@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"time"
+	"bufio"
 )
 
 func SomeWebo(urls []string) (stuff map[string]string) {
@@ -62,6 +63,7 @@ func SomeDocso(files []string) (this string) {
 func AsyncHttpDocs(urls []string) (this []string) {
 	ch := make(chan *HttpResponse)
 	c := make(chan Document)
+	body := []string{}
 	var count = 0
 	responses := []*HttpResponse{}
 	for _, url := range urls {
@@ -80,8 +82,12 @@ func AsyncHttpDocs(urls []string) (this []string) {
 		case r := <-ch:
 			count += 1
 			fmt.Printf("%s was fetched\n", r.url)
-			body, _ := ioutil.ReadAll(r.response.Body)
-			go NewDocument([]string{string(body)},count,r.url,c)
+			//body, _ := ioutil.ReadAll(r.response.Body)
+			scanner := bufio.NewScanner(r.response.Body)
+			for scanner.Scan() {
+				body = append(body, scanner.Text())
+			}
+			go NewDocument(body,count,r.url,c)
 			doc := <-c
 			th := fmt.Sprintf("\nDocId: %d, \nDocLabel: %s, \n # Doc Words: %d, \n # of Doc Sentences: %d\n\n",doc.id, doc.label, len(doc.words), len(doc.sentences))
 			this = append(this, th)
@@ -93,7 +99,7 @@ func AsyncHttpDocs(urls []string) (this []string) {
 			fmt.Printf(".")
 		}
 	}
-	return this
+	return
 	//return responses
 }
 
