@@ -6,14 +6,6 @@ import (
 	"time"
 )
 
-
-
-type HttpResponse struct {
-	url      string
-	response *http.Response
-	err      error
-}
-
 func AsyncHttpGets(urls []string) []*HttpResponse {
 	ch := make(chan *HttpResponse)
 	responses := []*HttpResponse{}

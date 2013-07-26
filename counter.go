@@ -1,4 +1,3 @@
-//package simplewords
 package siw
 
 import (
