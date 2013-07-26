@@ -41,7 +41,7 @@ func main() {
     //"https://code.google.com/p/mlgo/",
   }
 
-	results := asyncHttpGets(urls)
+	results := AsyncHttpGets(urls)
 	for _, result := range results {
 		fmt.Printf("URL: %s \nstatus: %s \nHeader: \n%s\n\n", result.url, result.response.Status, result.response.Header)
 		body, _ := ioutil.ReadAll(result.response.Body)
