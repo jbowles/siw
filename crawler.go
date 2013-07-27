@@ -1,9 +1,16 @@
 package siw
 
+
+
+
+
+/*
 import (
 	"fmt"
 	"net/http"
 	"time"
+	"io/ioutil"
+	"github.com/pkulak/simpletransport/simpletransport"
 )
 
 func AsyncHttpGets(urls []string) []*HttpResponse {
@@ -34,3 +41,4 @@ func AsyncHttpGets(urls []string) []*HttpResponse {
 	}
 	return responses
 }
+*/
