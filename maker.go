@@ -86,7 +86,7 @@ func MakeCollectionVis(coll *Collection) {
 		total_sentences += len(doc.sentences)
 	}
 	fmt.Printf(
-		"\nCollection build time = %v \n Collection size (# of documents) = %d\n Total words = %d \n Total Sentences = %d\n",
+		"\nCollection build time = %v \n Collection size (# of documents) = %d\n Total words = %d \n Total Sentences = %d\n\n",
 		coll.cBuildTime,
 		size,
 		total_words,
@@ -98,7 +98,7 @@ func MakeCollectionVis(coll *Collection) {
 //TODO: format error output in a more Go-like style
 func MakeDocumentVis(coll *Collection) {
 	for _, dval := range coll.docList {
-		fmt.Printf("\nCollection Build Time = %v \n DocBuildTime: %v \n DocId: %d \n  DocLabel: %s \n DocWords: %d \n DocSentences: %d\n DocError %v \n DocStatus: %s \n DocStatusCode: %d \n DocProtocol: %s \n DocHeader: %v", coll.cBuildTime, dval.dBuildTime, dval.id, dval.label, len(dval.words), len(dval.sentences), dval.httpres.err, dval.httpres.response.Status, dval.httpres.response.StatusCode, dval.httpres.response.Proto, dval.httpres.response.Header)
+		fmt.Printf("\nCollection Build Time = %v \n DocBuildTime: %v \n DocId: %d \n  DocLabel: %s \n DocWords: %d \n DocSentences: %d\n DocError %v \n DocStatus: %s \n DocStatusCode: %d \n DocProtocol: %s \n DocHeader: %v\n\n", coll.cBuildTime, dval.dBuildTime, dval.id, dval.label, len(dval.words), len(dval.sentences), dval.httpres.err, dval.httpres.response.Status, dval.httpres.response.StatusCode, dval.httpres.response.Proto, dval.httpres.response.Header)
 	}
 }
 
@@ -108,7 +108,7 @@ func MakeDocErrorsVis(coll *Collection) {
 	for _, dval := range coll.docList {
 		if dval.httpres.err != nil {
 			fmt.Printf("\nCollection Build Time = %v, \n DocId: %d \n DocBuildTime: %v, \n DocLabel: %s \n DocWords: %d \n DocSentences: %d\n DocError %v\n", coll.cBuildTime, dval.id, dval.dBuildTime, dval.label, len(dval.words), len(dval.sentences), dval.httpres.err)
-			fmt.Printf("\nAsyncError: %v \n AsyncMessage: %s \n AsyncUrl: %s \n AsyncCode: %d \n AsyncErrorRequestURL: %v \n AsyncErrorRequestProto: %v \n AsyncErrorRequestProtoMajor: %v \n", dval.httpres.asyncErr.Error, dval.httpres.asyncErr.Message, dval.httpres.asyncErr.Url, dval.httpres.asyncErr.Code, dval.httpres.asyncErr.errRequest.URL, dval.httpres.asyncErr.errRequest.Proto, dval.httpres.asyncErr.errRequest.ProtoMajor)
+			fmt.Printf("\nAsyncError: %v \n AsyncMessage: %s \n AsyncUrl: %s \n AsyncCode: %d \n AsyncErrorRequestURL: %v \n AsyncErrorRequestProto: %v \n AsyncErrorRequestProtoMajor: %v \n\n", dval.httpres.asyncErr.Error, dval.httpres.asyncErr.Message, dval.httpres.asyncErr.Url, dval.httpres.asyncErr.Code, dval.httpres.asyncErr.errRequest.URL, dval.httpres.asyncErr.errRequest.Proto, dval.httpres.asyncErr.errRequest.ProtoMajor)
 		}
 	}
 }
