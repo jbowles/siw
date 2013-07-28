@@ -21,31 +21,29 @@ I use a standard set of branches to experiment, test, and release production rea
 * Exp= Totally Wild
   * Trying out ideas and stuff.
 
-## Loader
-```go
-func main() {
-	files := []string{"/Users/jbowles/x/training_data/sentences_one.txt"}
-	LotsoDocso(files)
-}
-```
 
 ## Crawler
 ```go
-func main() {
-  var urls = []string{
-    //"http://golang.org/",
-    "https://en.wikipedia.org/wiki/Natural_language_processing",
-    //"http://golang.org/doc/faq#What_is_the_purpose_of_the_project",
-    //"https://github.com/yarlett/corpustools",
-    //"https://github.com/angeloskath/nlp-maxent-optimizer",
-    //"https://code.google.com/p/mlgo/",
-  }
+package main
 
-	results := AsyncHttpGets(urls)
-	for _, result := range results {
-		fmt.Printf("URL: %s \nstatus: %s \nHeader: \n%s\n\n", result.url, result.response.Status, result.response.Header)
-		body, _ := ioutil.ReadAll(result.response.Body)
-		fmt.Println(string(body))
-	}
+import (
+	"local/siw"
+)
+
+var lotso_urls = []string{
+	"http://golang.org/",
+	"http://golafjkldshfang.org/",      // formatted incorrectly on purpose
+	"https://code.google.com/p/mlgo/",
+	"http://en.wikipedia.org/wiki/Web_crawler",
+	"http://en.wikipedia.org/wiki/HTTP#Request_methods",
+	"http://open.xerox.com/Services/fst-nlp-tools",
+	"http://www.alchemyapi.com/natural-language-processing/",
+	"http://www.cleveralgorithms.com/nature-inspired/introduction.html#what_is_ai",
+}
+
+func main() {
+	collection := siw.CrawlerRun(lotso_urls)
+	siw.MakeCollectionVis(&collection)
+	siw.MakeDocumentVis(&collection)
 }
 ```
