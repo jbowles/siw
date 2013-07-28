@@ -3,9 +3,9 @@ package siw
 
 import (
 	"fmt"
-	"time"
 	"github.com/pkulak/simpletransport/simpletransport"
 	"net/http"
+	"time"
 )
 
 // Configure Transporter for RoundTrip requests
@@ -46,7 +46,7 @@ func AsyncWeb(transport *simpletransport.SimpleTransport, httpReq []*HttpRequest
 			resp, hrespErr := transport.RoundTrip(hreq.request)
 			if hrespErr != nil {
 				msg := fmt.Sprintf("AsyncWeb Error %v", hrespErr)
-				mockResponse := MakeResponse(hreq.request, hreq.url)
+				mockResponse := MakeMockResponse(hreq.request, hreq.url)
 				respChan <- &HttpResponse{hreq.url, mockResponse, hreq, hrespErr, &asyncError{hrespErr, msg, hreq.url, mockResponse.StatusCode, hreq.request}}
 			} else {
 				respChan <- &HttpResponse{hreq.url, resp, hreq, hrespErr, &asyncError{}}

@@ -2,16 +2,16 @@
 package siw
 
 import (
-	"io/ioutil"
-	"net/http"
-	"time"
 	"bufio"
 	"bytes"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"time"
 )
 
 // Make a mock response for cases where transport.RoundTrip fails
-func MakeResponse(req *http.Request, body string) *http.Response {
+func MakeMockResponse(req *http.Request, body string) *http.Response {
 	resp := &http.Response{
 		Status:        "422 Unprocessable Entity",
 		StatusCode:    422,
@@ -27,14 +27,14 @@ func MakeResponse(req *http.Request, body string) *http.Response {
 
 // Make Document
 // Stores HttpResponse and parses text into words and sentences
-// Also tracks time it took to build 
+// Also tracks time it took to build
 // Returns Document channel
 func MakeNewDocument(textset []string, id int, label string, dChan chan Document, hresp *HttpResponse) {
 	t0 := time.Now()
 	doc := Document{
-		id:		  id,
-		label:	  label,
-		response: hresp,
+		id:      id,
+		label:   label,
+		httpres: hresp,
 	}
 
 	for _, sent := range textset {
@@ -76,7 +76,7 @@ func MakeNewCollection(c *Crawler) (coll Collection) {
 }
 
 // Write to stdout MetaData about the Collection
-func MakeCollectionMetaData(coll *Collection) {
+func MakeCollectionVis(coll *Collection) {
 	size := len(coll.docList)
 	total_words := 0
 	total_sentences := 0
@@ -96,11 +96,19 @@ func MakeCollectionMetaData(coll *Collection) {
 
 // Write stdout metadata on requests that failed
 //TODO: format error output in a more Go-like style
-func MakeDocErrorData(coll *Collection) {
+func MakeDocumentVis(coll *Collection) {
 	for _, dval := range coll.docList {
-		if dval.response.err != nil {
-			fmt.Printf("\nCollection Build Time = %v, \n DocId: %d \n DocBuildTime: %v, \n DocLabel: %s \n DocWords: %d \n DocSentences: %d\n DocError %v\n", coll.cBuildTime, dval.id, dval.dBuildTime, dval.label, len(dval.words), len(dval.sentences), dval.response.err)
-			fmt.Printf("\nAsyncError: %v \n AsyncMessage: %s \n AsyncUrl: %s \n AsyncCode: %d \n AsyncErrorRequestURL: %v \n AsyncErrorRequestProto: %v \n AsyncErrorRequestProtoMajor: %v \n",dval.response.asyncErr.Error, dval.response.asyncErr.Message, dval.response.asyncErr.Url, dval.response.asyncErr.Code, dval.response.asyncErr.errRequest.URL, dval.response.asyncErr.errRequest.Proto, dval.response.asyncErr.errRequest.ProtoMajor)
+		fmt.Printf("\nCollection Build Time = %v \n DocBuildTime: %v \n DocId: %d \n  DocLabel: %s \n DocWords: %d \n DocSentences: %d\n DocError %v \n DocStatus: %s \n DocStatusCode: %d \n DocProtocol: %s \n DocHeader: %v", coll.cBuildTime, dval.dBuildTime, dval.id, dval.label, len(dval.words), len(dval.sentences), dval.httpres.err, dval.httpres.response.Status, dval.httpres.response.StatusCode, dval.httpres.response.Proto, dval.httpres.response.Header)
+	}
+}
+
+// Write stdout metadata on requests that failed
+//TODO: format error output in a more Go-like style
+func MakeDocErrorsVis(coll *Collection) {
+	for _, dval := range coll.docList {
+		if dval.httpres.err != nil {
+			fmt.Printf("\nCollection Build Time = %v, \n DocId: %d \n DocBuildTime: %v, \n DocLabel: %s \n DocWords: %d \n DocSentences: %d\n DocError %v\n", coll.cBuildTime, dval.id, dval.dBuildTime, dval.label, len(dval.words), len(dval.sentences), dval.httpres.err)
+			fmt.Printf("\nAsyncError: %v \n AsyncMessage: %s \n AsyncUrl: %s \n AsyncCode: %d \n AsyncErrorRequestURL: %v \n AsyncErrorRequestProto: %v \n AsyncErrorRequestProtoMajor: %v \n", dval.httpres.asyncErr.Error, dval.httpres.asyncErr.Message, dval.httpres.asyncErr.Url, dval.httpres.asyncErr.Code, dval.httpres.asyncErr.errRequest.URL, dval.httpres.asyncErr.errRequest.Proto, dval.httpres.asyncErr.errRequest.ProtoMajor)
 		}
 	}
 }

@@ -1,8 +1,8 @@
 package siw
 
 import (
-	"time"
 	"net/http"
+	"time"
 )
 
 // Highest level container for web content
@@ -19,7 +19,7 @@ type Document struct {
 	words      []string
 	sentences  []string
 	dBuildTime time.Duration
-	response   *HttpResponse
+	httpres    *HttpResponse
 }
 
 // Data for errors with Transporter
