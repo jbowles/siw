@@ -2,11 +2,12 @@ package siw
 
 import (
 	"fmt"
+	"time"
 )
 
 // T == Type or Token
-func (doc *Document) TFreq(tk string) float64 {
-	wc := float64(len(doc.words))
+func (doc *Document) TFreqNorm(tk string) float64 {
+	var wc = float64(len(doc.words))
 	var counter float64
 	for _, t := range doc.words {
 		switch t {
@@ -14,7 +15,34 @@ func (doc *Document) TFreq(tk string) float64 {
 			counter += 1
 		}
 	}
-	return counter / wc
+	return counter/wc
+}
+
+// T == Type or Token
+func (doc *Document) TFreq(tk string) float64 {
+	var timer time.Duration
+	timer = time.Nanosecond
+	tfreq := make(chan float64)
+	var wc = float64(len(doc.words))
+	go func(doc *Document) {
+		var counter float64
+		for _, t := range doc.words {
+			switch t {
+			case tk:
+				counter += 1
+			}
+		}
+		tfreq <-counter
+	}(doc)
+
+	for {
+		select {
+		case <-time.After(timer):
+			fmt.Printf(" %v counting... ", timer)
+		case res := <-tfreq:
+			return res/wc
+		}
+	}
 }
 
 func (doc *Document) TypeFrequencyChan(tf_c chan []string) {

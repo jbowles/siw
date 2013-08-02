@@ -80,17 +80,26 @@ func MakeCollectionVis(coll *Collection) {
 	size := len(coll.docList)
 	total_words := 0
 	total_sentences := 0
+	total_unretrieved := 0
 
 	for _, doc := range coll.docList {
 		total_words += len(doc.words)
 		total_sentences += len(doc.sentences)
+		if doc.httpres.err != nil {
+			total_unretrieved += 1
+		}
 	}
+	total_retrieved := size - total_unretrieved
+	success_percent := float64(total_retrieved)/float64(size) * 100
 	fmt.Printf(
-		"\nCollection build time = %v \n Collection size (# of documents) = %d\n Total words = %d \n Total Sentences = %d\n\n",
+		"\nCollection build time = %v \n Collection size (# of documents) = %d\n Total words = %d \n Total Sentences = %d\n Total Unretrieved = %d \n Total Retrieved = %d \n Success = %f percent \n \n",
 		coll.cBuildTime,
 		size,
 		total_words,
 		total_sentences,
+		total_unretrieved,
+		total_retrieved,
+		success_percent,
 	)
 }
 

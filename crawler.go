@@ -45,10 +45,12 @@ func AsyncWeb(transport *simpletransport.SimpleTransport, httpReq []*HttpRequest
 		go func(hreq *HttpRequest) {
 			resp, hrespErr := transport.RoundTrip(hreq.request)
 			if hrespErr != nil {
+				fmt.Printf("\n \t ********* unretrieved %s... \n \n",hreq.url)
 				msg := fmt.Sprintf("AsyncWeb Error %v", hrespErr)
 				mockResponse := MakeMockResponse(hreq.request, hreq.url)
 				respChan <- &HttpResponse{hreq.url, mockResponse, hreq, hrespErr, &asyncError{hrespErr, msg, hreq.url, mockResponse.StatusCode, hreq.request}}
 			} else {
+				fmt.Printf("\n retrieved %s... \n \n",hreq.url)
 				respChan <- &HttpResponse{hreq.url, resp, hreq, hrespErr, &asyncError{}}
 			}
 		}(hreq)
