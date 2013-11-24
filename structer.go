@@ -7,8 +7,8 @@ import (
 
 // Highest level container for web content
 type Collection struct {
-	docList    []*Document
-	cBuildTime time.Duration
+	DocList   []*Document
+	BuildTime time.Duration
 }
 
 // Core data container for web content,
