@@ -58,8 +58,8 @@ type HttpRequest struct {
 	err     error
 }
 
-// Basic Data for crawler, used for kicking off a run
-type Crawler struct {
+// Basic Data for indexer, used for kicking off a run
+type Indexer struct {
 	readTimeout time.Duration
 	reqTimeout  time.Duration
 	reqMethod   string

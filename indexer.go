@@ -12,26 +12,26 @@ import (
 // Loop through urls and build HTTP requests
 // Call AsyncWeb with Transport, Request, and Timeouts
 // Returns HttpResponse
-func Transporter(c *Crawler) (hresp []*HttpResponse) {
+func Transporter(idx *Indexer) (hresp []*HttpResponse) {
 	rChan := make(chan *HttpResponse)
 	hreq := []*HttpRequest{}
 
 	// build and configure Transport
 	transport := &simpletransport.SimpleTransport{
-		ReadTimeout:    c.readTimeout * time.Second,
-		RequestTimeout: c.reqTimeout * time.Second,
+		ReadTimeout:    idx.readTimeout * time.Second,
+		RequestTimeout: idx.reqTimeout * time.Second,
 	}
 
 	// loop through urls and create new http requests
-	for _, url := range c.uris {
-		newReq, hreqErr := http.NewRequest(c.reqMethod, url, nil)
+	for _, url := range idx.uris {
+		newReq, hreqErr := http.NewRequest(idx.reqMethod, url, nil)
 		if hreqErr != nil {
 			fmt.Println("Transporter http.NewRequest Error:", hreqErr)
 		}
 		hreq = append(hreq, &HttpRequest{url, newReq, hreqErr})
 	}
 
-	return AsyncWeb(transport, hreq, hresp, rChan, c.readTimeout*10)
+	return AsyncWeb(transport, hreq, hresp, rChan, idx.readTimeout*10)
 }
 
 // Make HTTP requests by way of HttpResponse channel
@@ -45,12 +45,12 @@ func AsyncWeb(transport *simpletransport.SimpleTransport, httpReq []*HttpRequest
 		go func(hreq *HttpRequest) {
 			resp, hrespErr := transport.RoundTrip(hreq.request)
 			if hrespErr != nil {
-				fmt.Printf("\n \t ********* unretrieved %s... \n \n",hreq.url)
+				fmt.Printf("\n \t ********* unretrieved %s... \n \n", hreq.url)
 				msg := fmt.Sprintf("AsyncWeb Error %v", hrespErr)
 				mockResponse := MakeMockResponse(hreq.request, hreq.url)
 				respChan <- &HttpResponse{hreq.url, mockResponse, hreq, hrespErr, &asyncError{hrespErr, msg, hreq.url, mockResponse.StatusCode, hreq.request}}
 			} else {
-				fmt.Printf("\n retrieved %s... \n \n",hreq.url)
+				fmt.Printf("\n retrieved %s... \n \n", hreq.url)
 				respChan <- &HttpResponse{hreq.url, resp, hreq, hrespErr, &asyncError{}}
 			}
 		}(hreq)

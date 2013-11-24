@@ -51,14 +51,14 @@ func MakeNewDocument(textset []string, id int, label string, dChan chan Document
 // Builds NewDocument and adds it to Collection
 // Tracks time it took to build
 // Returns Collection
-func MakeNewCollection(c *Crawler) (coll Collection) {
+func MakeNewCollection(idx *Indexer) (coll Collection) {
 	t0 := time.Now()
 	doC := make(chan Document)
 	tset := []string{}
 	count := 0
 
 	// returns HttpResponse
-	transpo := Transporter(c)
+	transpo := Transporter(idx)
 
 	for _, r := range transpo {
 		scanner := bufio.NewScanner(r.response.Body)
@@ -90,7 +90,7 @@ func MakeCollectionVis(coll *Collection) {
 		}
 	}
 	total_retrieved := size - total_unretrieved
-	success_percent := float64(total_retrieved)/float64(size) * 100
+	success_percent := float64(total_retrieved) / float64(size) * 100
 	fmt.Printf(
 		"\nCollection build time = %v \n Collection size (# of documents) = %d\n Total words = %d \n Total Sentences = %d\n Total Unretrieved = %d \n Total Retrieved = %d \n Success = %f percent \n \n",
 		coll.cBuildTime,

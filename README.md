@@ -22,32 +22,32 @@ I use a standard set of branches to experiment, test, and release production rea
   * Trying out ideas and stuff.
 
 
-## Crawler
-One practical consideration in using the Crawler is the number of Url requests made per Crawler run. I get errors when trying to process a file over 90KB (about 2,000 distinct Urls). Maybe in the future I'll make the Crawler smarter so it will *detect the optimal batch size per available memory and other hardware resources as well as the number of available threads to Go* (default for Go is `GOMAXPROCS=4`).
+## Indexer
+One practical consideration in using the Indexer is the number of Url requests made per Crawler run. I get errors when trying to process a file over 90KB (about 2,000 distinct Urls). Maybe in the future I'll make the Crawler smarter so it will *detect the optimal batch size per available memory and other hardware resources as well as the number of available threads to Go* (default for Go is `GOMAXPROCS=4`).
 
 ```go
-package main
+    package main
 
-import (
-	"local/siw"
-)
+    import (
+      "local/siw"
+    )
 
-var lotso_urls = []string{
-	"http://golang.org/",
-	"http://golafjkldshfang.org/",      // formatted incorrectly on purpose
-	"https://code.google.com/p/mlgo/",
-	"http://en.wikipedia.org/wiki/Web_crawler",
-	"http://en.wikipedia.org/wiki/HTTP#Request_methods",
-	"http://open.xerox.com/Services/fst-nlp-tools",
-	"http://www.alchemyapi.com/natural-language-processing/",
-	"http://www.cleveralgorithms.com/nature-inspired/introduction.html#what_is_ai",
-}
+    var lotso_urls = []string{
+      "http://golang.org/",
+      "http://golafjkldshfang.org/",      // formatted incorrectly on purpose
+      "https://code.google.com/p/mlgo/",
+      "http://en.wikipedia.org/wiki/Web_crawler",
+      "http://en.wikipedia.org/wiki/HTTP#Request_methods",
+      "http://open.xerox.com/Services/fst-nlp-tools",
+      "http://www.alchemyapi.com/natural-language-processing/",
+      "http://www.cleveralgorithms.com/nature-inspired/introduction.html#what_is_ai",
+    }
 
-func main() {
-	collection := siw.CrawlerRun(lotso_urls)
-	siw.MakeCollectionVis(&collection)
-	siw.MakeDocumentVis(&collection)
-}
+    func main() {
+      collection := siw.CrawlerRun(lotso_urls)
+      siw.MakeCollectionVis(&collection)
+      siw.MakeDocumentVis(&collection)
+    }
 ```
 
 Over 5,000 Urls and documents built in 55 seconds on MacBook Pro 10.8 2.7 GHz Intel Core i7 with 16 GB RAM on my crappy home network.

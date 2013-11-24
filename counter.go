@@ -15,7 +15,7 @@ func (doc *Document) TFreqNorm(tk string) float64 {
 			counter += 1
 		}
 	}
-	return counter/wc
+	return counter / wc
 }
 
 // T == Type or Token
@@ -32,7 +32,7 @@ func (doc *Document) TFreq(tk string) float64 {
 				counter += 1
 			}
 		}
-		tfreq <-counter
+		tfreq <- counter
 	}(doc)
 
 	for {
@@ -40,7 +40,7 @@ func (doc *Document) TFreq(tk string) float64 {
 		case <-time.After(timer):
 			fmt.Printf(" %v counting... ", timer)
 		case res := <-tfreq:
-			return res/wc
+			return res / wc
 		}
 	}
 }
