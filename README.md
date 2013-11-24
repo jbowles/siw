@@ -11,6 +11,12 @@ Build the binary, deploy to server, and use it as you would a UNIX command. Pass
 I built this as a binary so that various web applications could make command line calls on the server, offloading intensive word and leveraging some sweet concurrency. Follow link for information on [Go language performance and concurrency](https://www.google.com/search?q=golang+concurrency+performance&oq=golang+concurrency+performance)
 
 
+## Testing
+Starting to write tests to get this ready for real-world use. For now internet access is necessary to run tests.
+
+* `goconvey` in the root dir of this will run all tests and set up web browser for inspection.
+* `go test` in root dir will run normal tests.
+
 ## Branches and Development
 I use a standard set of branches to experiment, test, and release production ready code.
 
