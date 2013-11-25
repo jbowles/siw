@@ -1,9 +1,16 @@
 package siw
 
 import (
+	"log"
 	"net/http"
 	"time"
 )
+
+type ClerkLog struct {
+	*log.Logger
+}
+
+var clog = &ClerkLog{}
 
 // Highest level container for web content
 type Collection struct {

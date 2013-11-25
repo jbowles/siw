@@ -4,6 +4,7 @@ package siw
 import (
 	"fmt"
 	"github.com/pkulak/simpletransport/simpletransport"
+	"log"
 	"net/http"
 	"time"
 )
@@ -26,7 +27,7 @@ func Transporter(idx *Indexer) (hresp []*HttpResponse) {
 	for _, url := range idx.uris {
 		newReq, hreqErr := http.NewRequest(idx.reqMethod, url, nil)
 		if hreqErr != nil {
-			fmt.Println("Transporter http.NewRequest Error:", hreqErr)
+			log.Printf("Transporter http.NewRequest Error:", hreqErr)
 		}
 		hreq = append(hreq, &HttpRequest{url, newReq, hreqErr})
 	}
@@ -45,12 +46,15 @@ func AsyncWeb(transport *simpletransport.SimpleTransport, httpReq []*HttpRequest
 		go func(hreq *HttpRequest) {
 			resp, hrespErr := transport.RoundTrip(hreq.request)
 			if hrespErr != nil {
-				fmt.Printf("\n \t ********* unretrieved %s... \n \n", hreq.url)
+				//clog.Println(os.Stderr, "********* unretrieved", log.Lshortfile)
+				//log.Printf("\n \t ********* unretrieved %s... \n \n", hreq.url)
 				msg := fmt.Sprintf("AsyncWeb Error %v", hrespErr)
 				mockResponse := MakeMockResponse(hreq.request, hreq.url)
 				respChan <- &HttpResponse{hreq.url, mockResponse, hreq, hrespErr, &asyncError{hrespErr, msg, hreq.url, mockResponse.StatusCode, hreq.request}}
 			} else {
-				fmt.Printf("\n retrieved %s... \n \n", hreq.url)
+				//clog.Println(os.Stderr, "retrieved", log.Lshortfile)
+				//clog.Printf("retrieved %s", hreq.url)
+				//log.Printf("\n retrieved %s... \n \n", hreq.url)
 				respChan <- &HttpResponse{hreq.url, resp, hreq, hrespErr, &asyncError{}}
 			}
 		}(hreq)
@@ -64,7 +68,8 @@ func AsyncWeb(transport *simpletransport.SimpleTransport, httpReq []*HttpRequest
 				return httpResp
 			}
 		case <-time.After(timer * time.Millisecond):
-			fmt.Printf(" %v ...", timer) //NanoSeconds@!
+			//clog.Println(os.Stderr, "timer", log.Lshortfile)
+			//log.Printf(" %v ...", timer) //NanoSeconds@!
 		}
 	}
 	return httpResp

@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+//clog := ClerkLog{log.New(os.Stderr, "Counter: ", log.Lshortfile)}
+
 // T == Type or Token
 func (doc *Document) TFreqNorm(tk string) float64 {
 	var wc = float64(len(doc.words))
@@ -38,7 +40,8 @@ func (doc *Document) TFreq(tk string) float64 {
 	for {
 		select {
 		case <-time.After(timer):
-			fmt.Printf(" %v counting... ", timer)
+			//clog.Println(os.Stderr, "TFreq", log.Lshortfile)
+			//log.Printf(" %v counting... ", timer)
 		case res := <-tfreq:
 			return res / wc
 		}
