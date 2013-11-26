@@ -3,6 +3,7 @@ package siw
 import (
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -10,7 +11,17 @@ type ClerkLog struct {
 	*log.Logger
 }
 
-var clog = &ClerkLog{}
+func newClerkLog(prefix string) *ClerkLog {
+	var f, err = os.Create("./log/simple_words.log")
+	if err != nil {
+		log.Fatal(err)
+	}
+	return &ClerkLog{
+		log.New(f, prefix, (log.Ldate | log.Ltime | log.Lmicroseconds | log.Lshortfile)),
+	}
+}
+
+var clog = newClerkLog("siw: ")
 
 // Highest level container for web content
 type Collection struct {
