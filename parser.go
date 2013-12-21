@@ -12,7 +12,7 @@ import (
 )
 
 /*
-Cut is a simple 'split-no'whitespace' tokenizer using `strings.Fields()`
+Cut is a simple 'split-on-whitespace' tokenizer using `strings.Fields()`
 To be used when no better option is available.
 */
 func Cut(sent string) (cut_text []string) {
